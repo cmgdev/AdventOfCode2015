@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e43a0153-e22c-45ab-8d2f-756220c92956" name="Changes" comment="date 1, part 1">
+    <list default="true" id="e43a0153-e22c-45ab-8d2f-756220c92956" name="Changes" comment="date 1, part 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/day01/Puzzle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/day01/Puzzle.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +21,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -46,7 +46,14 @@
     "settings.editor.selected.configurable": "project.propVCSSupport.CommitDialog"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Kotlin.PuzzleKt (1)">
+    <configuration name="PuzzleKt (1)" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="day02.PuzzleKt" />
+      <module name="AdventOfCode2015.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="PuzzleKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="day01.PuzzleKt" />
       <module name="AdventOfCode2015.main" />
@@ -56,6 +63,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.PuzzleKt (1)" />
         <item itemvalue="Kotlin.PuzzleKt" />
       </list>
     </recent_temporary>
@@ -90,7 +98,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656378862944</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="date 1, part 2">
+      <created>1656380365556</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1656380365557</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -110,6 +125,7 @@
     <MESSAGE value="initial commit" />
     <MESSAGE value="update gitignore" />
     <MESSAGE value="date 1, part 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="date 1, part 1" />
+    <MESSAGE value="date 1, part 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="date 1, part 2" />
   </component>
 </project>
