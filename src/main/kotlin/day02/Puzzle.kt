@@ -5,6 +5,10 @@ fun main() {
     println(wrappingPaper(EXAMPLE_1) == 58)
     println(wrappingPaper(EXAMPLE_2) == 43)
     println(wrappingPaper(INPUT) == 1588178)
+
+    println(ribbons(EXAMPLE_1) == 34)
+    println(ribbons(EXAMPLE_2) == 14)
+    print(ribbons(INPUT) == 3783758)
 }
 
 fun wrappingPaper(dims: String = ""): Int {
@@ -13,6 +17,13 @@ fun wrappingPaper(dims: String = ""): Int {
         val sides = listOf(parts[0] * parts[1], parts[1] * parts[2], parts[0] * parts[2])
 
         2 * (sides.sum()) + sides.min()
+    }
+}
+
+fun ribbons(dims: String = ""): Int {
+    return dims.lines().sumOf { d ->
+        val parts = d.split("x").map { it.toInt() }.sorted()
+        parts.take(2).sumOf { it * 2 } + parts.reduce { left, right -> left * right }
     }
 }
 
