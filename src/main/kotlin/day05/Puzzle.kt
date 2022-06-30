@@ -1,34 +1,48 @@
 package day05
 
 fun main() {
-    println(isNice(EXAMPLE_1))
-    println(isNice(EXAMPLE_2))
-    println(!isNice(EXAMPLE_3))
-    println(!isNice(EXAMPLE_4))
-    println(!isNice(EXAMPLE_5))
+    println(isNice("ugknbfddgicrmopn"))
+    println(isNice("aaa"))
+    println(!isNice("jchzalrnumimnmhp"))
+    println(!isNice("haegwjzuvuyypxyu"))
+    println(!isNice("dvszwmarrgswjxmb"))
 
     val names = INPUT.lines().filter { isNice(it.trim()) }
     println(names.size == 258)
+
+    println(isNicer("xyxy"))
+    println(!isNicer("ugknbfddgicrmopn"))
+    println(!isNicer("aabcdefgaa"))
+    println(isNicer("qjhvhtzxzqqjkmpb"))
+    println(isNicer("xxyxx"))
+    println(!isNicer("uurcxstgmygtbstg"))
+    println(!isNicer("ieodomkazucvgmuy"))
+
+    val nicerNames = INPUT.lines().filter { isNicer(it.trim()) }
+    println(nicerNames.size == 53)
 }
 
 fun isNice(name: String): Boolean {
     val banned = listOf("ab", "cd", "pq", "xy")
     val vowels = listOf('a', 'e', 'i', 'o', 'u')
 
-    val doubleLetters = name.windowed(2).any { it[0] == it[1] }
-    val doesNotHaveBanned = name.windowed(2).none { banned.contains(it) }
-    val vowelsInName = name.count { vowels.contains(it) } >= 3
-
-    return (doubleLetters
-            && doesNotHaveBanned
-            && vowelsInName)
+    return (name.windowed(2).any { it[0] == it[1] }
+            && name.windowed(2).none { banned.contains(it) }
+            && name.count { vowels.contains(it) } >= 3)
 }
 
-const val EXAMPLE_1 = "ugknbfddgicrmopn"
-const val EXAMPLE_2 = "aaa"
-const val EXAMPLE_3 = "jchzalrnumimnmhp"
-const val EXAMPLE_4 = "haegwjzuvuyypxyu"
-const val EXAMPLE_5 = "dvszwmarrgswjxmb"
+fun isNicer(name: String): Boolean {
+    val twoLettersNoOverlap = name.windowed(2).groupingBy { it }.eachCount()
+        .filter { (_, i) -> i >= 2 }.keys
+        .any {
+            val first = name.indexOf(it)
+            name.indexOf(it, first + 2) > 0
+        }
+    val isABA = name.windowed(3).any { it[0] == it[2] }
+
+    return twoLettersNoOverlap && isABA
+}
+
 val INPUT = """
 rthkunfaakmwmush
 qxlnvjguikqcyfzt
