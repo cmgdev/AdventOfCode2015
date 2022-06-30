@@ -43,3 +43,4 @@ bin/
 gradlew.bat
 gradlew
 gradle/wrapper/gradle-wrapper.jar
+.idea/workspace.xml
