@@ -24,11 +24,13 @@ fun main() {
     println(wires["y"] == "456")
 
     wires = emulate(INPUT.lines())
-//    println(wires)
     println(wires["a"] == "3176")
+
+    wires = emulate(INPUT.lines(), true)
+    println(wires["a"] == "14710")
 }
 
-fun emulate(instructions: List<String>): Map<String, String> {
+fun emulate(instructions: List<String>, part2: Boolean = false): Map<String, String> {
     val wires = mutableMapOf<String, String>()
     val instructionDeque = ArrayDeque(instructions)
 
@@ -39,11 +41,15 @@ fun emulate(instructions: List<String>): Map<String, String> {
 
             // assignment
             if (parts.size == 3) {
-                val firstWireVal = getValue(wires, parts[0])
-                if (firstWireVal != null) {
-                    wires[parts[2]] = firstWireVal.toString()
+                if (part2 && parts[2] == "b") {
+                    wires["b"] = "3176"
                 } else {
-                    instructionDeque.addLast(instruction)
+                    val firstWireVal = getValue(wires, parts[0])
+                    if (firstWireVal != null) {
+                        wires[parts[2]] = firstWireVal.toString()
+                    } else {
+                        instructionDeque.addLast(instruction)
+                    }
                 }
             }
             // NOT
