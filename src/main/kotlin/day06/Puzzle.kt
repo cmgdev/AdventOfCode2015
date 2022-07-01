@@ -1,5 +1,7 @@
 package day06
 
+import kotlin.math.max
+
 fun main() {
     println(
         blinkenLights(
@@ -12,6 +14,10 @@ fun main() {
     )
     println(blinkenLights(listOf("toggle 0,0 through 999,0")) == 1000)
     println(blinkenLights(INPUT.lines()) == 377891)
+
+    println(blinkenLights2(listOf("turn on 0,0 through 999,999")) == 1000000)
+    println(blinkenLights2(listOf("turn off 0,0 through 999,999")) == 0)
+    println(blinkenLights2(INPUT.lines()) == 14110788)
 }
 
 fun blinkenLights(instructions: List<String>): Int {
@@ -23,9 +29,6 @@ fun blinkenLights(instructions: List<String>): Int {
             val parts = trim.replaceFirst("turn ", "").split(" ")
             val start = parts[1].split(",")
             val end = parts[3].split(",")
-
-            if (start[0].toInt() > end[0].toInt() || start[1].toInt() > end[1].toInt())
-                println("problem with $start and $end range!")
 
             (start[0].toInt()..end[0].toInt()).forEach { x ->
                 (start[1].toInt()..end[1].toInt()).forEach { y ->
@@ -44,6 +47,34 @@ fun blinkenLights(instructions: List<String>): Int {
         }
     }
     return litLights.size
+}
+
+fun blinkenLights2(instructions: List<String>): Int {
+    val lights = mutableMapOf<Pair<Int, Int>, Int>()
+
+    instructions.forEach { instruction ->
+        val trim = instruction.trim()
+        if (trim.isNotBlank()) {
+            val parts = trim.replaceFirst("turn ", "").split(" ")
+            val start = parts[1].split(",")
+            val end = parts[3].split(",")
+
+            val delta: Int = when (parts[0]) {
+                "on" -> 1
+                "off" -> -1
+                "toggle" -> 2
+                else -> 0
+            }
+
+            (start[0].toInt()..end[0].toInt()).forEach { x ->
+                (start[1].toInt()..end[1].toInt()).forEach { y ->
+                    val point = Pair(x, y)
+                    lights[point] = max(lights.getOrDefault(point, 0) + delta, 0)
+                }
+            }
+        }
+    }
+    return lights.values.sum()
 }
 
 const val INPUT = """turn on 887,9 through 959,629
