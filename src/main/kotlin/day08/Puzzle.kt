@@ -3,6 +3,9 @@ package day08
 fun main() {
     println(codeLengthMinusDataLength(EXAMPLE.lines()) == 12)
     println(codeLengthMinusDataLength(INPUT.lines()) == 1371)
+
+    println(reEncodeLengthMinusCodeLength(EXAMPLE.lines()) == 19)
+    println(reEncodeLengthMinusCodeLength(INPUT.lines()) == 2117)
 }
 
 fun codeLengthMinusDataLength(lines: List<String>): Int {
@@ -16,6 +19,17 @@ fun codeLengthMinusDataLength(lines: List<String>): Int {
             .replace("\\\\", "\\") // replace \\ with \
 //        println("$it -> $data")
         it.length - data.length
+    }
+}
+
+fun reEncodeLengthMinusCodeLength(lines: List<String>): Int {
+    return lines.map { it.trim() }.filter { it.isNotBlank() }.sumOf {
+        var reEncoded = it.replace("\\", "\\\\") // replace \ with \\
+            .replace(Regex("\""), "\\\\\"") // replace " with \"
+
+        reEncoded = "\"$reEncoded\""
+//        println("$it -> $reEncoded -> ${reEncoded.length}")
+        reEncoded.length - it.length
     }
 }
 
