@@ -1,15 +1,20 @@
 package day09
 
 import util.permute
+import kotlin.math.max
 import kotlin.math.min
 
 fun main() {
-    println(findShortestRoute(EXAMPLE.lines()) == 605)
+    var minAndMaxRoute = findMinAndMaxRoute(EXAMPLE.lines())
+    println(minAndMaxRoute["SHORTEST"] == 605)
+    println(minAndMaxRoute["LONGEST"] == 982)
 
-    println(findShortestRoute(INPUT.lines()) == 117)
+    minAndMaxRoute = findMinAndMaxRoute(INPUT.lines())
+    println(minAndMaxRoute["SHORTEST"] == 117)
+    println(minAndMaxRoute["LONGEST"] == 909)
 }
 
-fun findShortestRoute(lines: List<String>): Int {
+fun findMinAndMaxRoute(lines: List<String>): Map<String, Int> {
     val names = mutableSetOf<String>()
     val edges = mutableListOf<Edge>()
 
@@ -25,15 +30,20 @@ fun findShortestRoute(lines: List<String>): Int {
     val permutations = permute(names.toList())
 
     var shortest = Int.MAX_VALUE
+    var longest = 0
     permutations.forEach { p ->
         val dist = p.windowed(2).sumOf { pair ->
             edges.filter { edge -> edge.nameA == pair[0] && edge.nameB == pair[1] }.map { edge -> edge.weight }.first()
         }
 
         shortest = min(shortest, dist)
+        longest = max(longest, dist)
     }
 
-    return shortest
+    return buildMap {
+        put("SHORTEST", shortest)
+        put("LONGEST", longest)
+    }
 }
 
 data class Edge(val nameA: String, val nameB: String, val weight: Int)
