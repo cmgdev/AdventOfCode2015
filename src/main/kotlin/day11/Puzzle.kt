@@ -15,6 +15,7 @@ fun main() {
     println(nextValidPassword("ghijklmn") == "ghjaabcc")
 
     println(nextValidPassword("cqjxjnds") == "cqjxxyzz")
+    println(nextValidPassword("cqjxxyzz") == "cqkaabcc")
 }
 
 fun nextValidPassword(password: String): String {
@@ -29,9 +30,9 @@ private fun nextPassword(password: String): String {
     var nextPassword = password
 
     val invCharIdx = password.indexOfAny(INVALID_CHARS.toCharArray())
-    if( invCharIdx >= 0){
-        nextPassword = password.substring(0,invCharIdx) + nextChar(password[invCharIdx])
-        (invCharIdx + 1 until password.length).forEach{ _ -> nextPassword += "a"}
+    if (invCharIdx >= 0) {
+        nextPassword = password.substring(0, invCharIdx) + nextChar(password[invCharIdx])
+        (invCharIdx + 1 until password.length).forEach { _ -> nextPassword += "a" }
         return nextPassword
     }
 
