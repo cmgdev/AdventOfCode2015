@@ -6,9 +6,11 @@ import kotlin.math.max
 fun main() {
     println(findHappiness(EXAMPLE) == 330)
     println(findHappiness(INPUT) == 733)
+
+    println(findHappiness(INPUT, true) == 725)
 }
 
-fun findHappiness(input: String): Int {
+fun findHappiness(input: String, includeSelf: Boolean = false): Int {
     val names = mutableSetOf<String>()
     val relationships = mutableMapOf<Pair<String, String>, Int>()
 
@@ -18,6 +20,14 @@ fun findHappiness(input: String): Int {
             names.add(parts[0])
             relationships[Pair(parts[0], parts[2])] = parts[1].toInt()
         }
+
+    if (includeSelf) {
+        names.forEach {
+            relationships[Pair(it, "me")] = 0
+            relationships[Pair("me", it)] = 0
+        }
+        names.add("me")
+    }
 
     val possibleSeats = permute(names.toList())
     var maxHappiness = 0
