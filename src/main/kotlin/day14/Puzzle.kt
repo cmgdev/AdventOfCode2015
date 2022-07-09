@@ -3,52 +3,95 @@ package day14
 import kotlin.math.min
 
 fun main() {
-    println(distanceTravelled(14, 10, 127, 1) == 14)
-    println(distanceTravelled(16, 11, 162, 1) == 16)
-    println(distanceTravelled(14, 10, 127, 1000) == 1120)
-    println(distanceTravelled(16, 11, 162, 1000) == 1056)
+    val travelSecondsExample = 1000
+    val travelSeconds = 2503
 
-    val vixen = distanceTravelled(8, 8, 53, 2503)
-    val blitzen = distanceTravelled(13, 4, 49, 2503)
-    val rudolph = distanceTravelled(20, 7, 132, 2503)
-    val cupid = distanceTravelled(12, 4, 43, 2503)
-    val donner = distanceTravelled(9, 5, 38, 2503)
-    val dasher = distanceTravelled(10, 4, 37, 2503)
-    val comet = distanceTravelled(3, 37, 76, 2503)
-    val prancer = distanceTravelled(9, 12, 97, 2503)
-    val dancer = distanceTravelled(37, 1, 36, 2503)
+    val cometExample = ReindeerStats("comet", 14, 10, 127)
+    val dancerExample = ReindeerStats("dancer", 16, 11, 162)
+    println(cometExample.distanceTravelledIn(1) == 14)
+    println(dancerExample.distanceTravelledIn(1) == 16)
+    println(cometExample.distanceTravelledIn(travelSecondsExample) == 1120)
+    println(dancerExample.distanceTravelledIn(travelSecondsExample) == 1056)
 
-    val speeds = mutableListOf<Int>(dasher, dancer, prancer, vixen, comet, cupid, donner, blitzen, rudolph)
+    val vixen = ReindeerStats("vixen", 8, 8, 53)
+    val blitzen = ReindeerStats("blitzen", 13, 4, 49)
+    val rudolph = ReindeerStats("rudolph", 20, 7, 132)
+    val cupid = ReindeerStats("cupid", 12, 4, 43)
+    val donner = ReindeerStats("donner", 9, 5, 38)
+    val dasher = ReindeerStats("dasher", 10, 4, 37)
+    val comet = ReindeerStats("comet", 3, 37, 76)
+    val prancer = ReindeerStats("prancer", 9, 12, 97)
+    val dancer = ReindeerStats("dancer", 37, 1, 36)
+
+    val speeds = mutableListOf(
+        vixen.distanceTravelledIn(travelSeconds),
+        blitzen.distanceTravelledIn(travelSeconds),
+        rudolph.distanceTravelledIn(travelSeconds),
+        cupid.distanceTravelledIn(travelSeconds),
+        donner.distanceTravelledIn(travelSeconds),
+        dasher.distanceTravelledIn(travelSeconds),
+        comet.distanceTravelledIn(travelSeconds),
+        prancer.distanceTravelledIn(travelSeconds),
+        dancer.distanceTravelledIn(travelSeconds)
+    )
     speeds.sortDescending()
     println(speeds.first() == 2655)
-    /*
-Vixen can fly    8 km/s for 8 seconds, but then must rest for  53 seconds.
-Blitzen can fly 13 km/s for 4 seconds, but then must rest for  49 seconds.
-Rudolph can fly 20 km/s for 7 seconds, but then must rest for  132 seconds.
-Cupid can fly   12 km/s for 4 seconds, but then must rest for  43 seconds.
-Donner can fly   9 km/s for 5 seconds, but then must rest for  38 seconds.
-Dasher can fly  10 km/s for 4 seconds, but then must rest for  37 seconds.
-Comet can fly    3 km/s for 37 seconds, but then must rest for 76 seconds.
-Prancer can fly  9 km/s for 12 seconds, but then must rest for 97 seconds.
-Dancer can fly  37 km/s for 1 seconds, but then must rest for  36 seconds.
 
-     */
+    println("\npart 2")
+    val exampleRunningDistances = listOf(
+        cometExample.runningDistanceTravelled(travelSecondsExample),
+        dancerExample.runningDistanceTravelled(travelSecondsExample)
+    )
+    println(assignPoints(exampleRunningDistances).max() == 689)
+
+    val runningDistances = listOf(
+        vixen.runningDistanceTravelled(travelSeconds),
+        blitzen.runningDistanceTravelled(travelSeconds),
+        rudolph.runningDistanceTravelled(travelSeconds),
+        cupid.runningDistanceTravelled(travelSeconds),
+        donner.runningDistanceTravelled(travelSeconds),
+        dasher.runningDistanceTravelled(travelSeconds),
+        comet.runningDistanceTravelled(travelSeconds),
+        prancer.runningDistanceTravelled(travelSeconds),
+        dancer.runningDistanceTravelled(travelSeconds)
+    )
+    println(assignPoints(runningDistances).max() == 1059)
 }
 
-fun distanceTravelled(speed: Int, duration: Int, rest: Int, travelSeconds: Int): Int {
-    var distance = 0
-    var remainingSeconds = travelSeconds
-    val cycleTime = duration + rest
+fun assignPoints(runningDistances: List<List<Int>>): List<Int> {
+    val points = MutableList(runningDistances.size) { 0 }
+    val iterations = runningDistances.minOf { it.size }
 
-    while (remainingSeconds > 0) {
-        if (remainingSeconds <= cycleTime) {
-            distance += speed * min(remainingSeconds, duration)
-            remainingSeconds -= cycleTime
-        } else {
-            val times = remainingSeconds / cycleTime
-            distance += speed * times * duration
-            remainingSeconds -= times * cycleTime
-        }
+    (0 until iterations).forEach { i ->
+        val thisIteration = runningDistances.map { it[i] }.toList()
+        val max = thisIteration.max()
+        val leadingReindeerIdx = thisIteration.mapIndexed { idx, it -> if (it == max) idx else -1 }.filter { it >= 0 }
+        leadingReindeerIdx.forEach { points[it] = points[it] + 1 }
     }
-    return distance
+
+    return points
+}
+
+data class ReindeerStats(val name: String, val speed: Int, val duration: Int, val rest: Int) {
+    fun distanceTravelledIn(travelSeconds: Int): Int {
+        var distance = 0
+        var remainingSeconds = travelSeconds
+        val cycleTime = duration + rest
+
+        while (remainingSeconds > 0) {
+            if (remainingSeconds <= cycleTime) {
+                distance += speed * min(remainingSeconds, duration)
+                remainingSeconds -= cycleTime
+            } else {
+                val times = remainingSeconds / cycleTime
+                distance += speed * times * duration
+                remainingSeconds -= times * cycleTime
+            }
+        }
+        return distance
+    }
+
+    fun runningDistanceTravelled(travelSeconds: Int): List<Int> {
+        return (1..travelSeconds).map { this.distanceTravelledIn(it) }.toList()
+    }
 }
