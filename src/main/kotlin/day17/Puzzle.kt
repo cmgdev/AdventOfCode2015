@@ -5,9 +5,16 @@ import util.combinations
 fun main() {
     val exampleCombos = combosToTarget(getContainers(EXAMPLE), 25)
     println(exampleCombos.size == 4)
+    println(combosWithMinSize(exampleCombos).size == 3)
 
     val combos = combosToTarget(getContainers(INPUT), 150)
     println(combos.size == 4372)
+    println(combosWithMinSize(combos).size == 4)
+}
+
+fun combosWithMinSize(combos: List<List<Container>>): List<List<Container>> {
+    val min = combos.minOf { it.size }
+    return combos.filter { it.size == min }
 }
 
 fun getContainers(input: String): List<Container> {
