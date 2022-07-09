@@ -12,6 +12,18 @@ fun main() {
             val val3 = it[7]
             matches(prop1, val1) && matches(prop2, val2) && matches(prop3, val3)
         }.toList().first()[1] == "213")
+
+    println(INPUT.lines().asSequence().map { it.trim() }.filterNot { it.isBlank() }
+        .map { it.split(" ") }
+        .filter {
+            val prop1 = it[2]
+            val val1 = it[3].toInt()
+            val prop2 = it[4]
+            val val2 = it[5].toInt()
+            val prop3 = it[6]
+            val val3 = it[7].toInt()
+            matches(prop1, val1) && matches(prop2, val2) && matches(prop3, val3)
+        }.toList().first()[1] == "323")
 }
 
 fun matches(property: String, value: String): Boolean {
@@ -26,6 +38,22 @@ fun matches(property: String, value: String): Boolean {
         "trees" -> value == "3"
         "cars" -> value == "2"
         "perfumes" -> value == "1"
+        else -> false
+    }
+}
+
+fun matches(property: String, value: Int): Boolean {
+    return when (property) {
+        "children" -> value == 3
+        "cats" -> value > 7
+        "samoyeds" -> value == 2
+        "pomeranians" -> value < 3
+        "akitas" -> value == 0
+        "vizslas" -> value == 0
+        "goldfish" -> value < 5
+        "trees" -> value > 3
+        "cars" -> value == 2
+        "perfumes" -> value == 1
         else -> false
     }
 }
