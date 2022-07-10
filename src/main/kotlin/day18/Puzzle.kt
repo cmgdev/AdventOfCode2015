@@ -5,33 +5,46 @@ const val OFF = '.'
 
 fun main() {
     println(runIterations(EXAMPLE.lines(), 4).sumOf { line -> line.count { it == ON } } == 4)
-
     println(runIterations(INPUT.lines(), 100).sumOf { line -> line.count { it == ON } } == 1061)
+
+    println(runIterations(EXAMPLE.lines(), 5, true).sumOf { line -> line.count { it == ON } } == 17)
+    println(runIterations(INPUT.lines(), 100, true).sumOf { line -> line.count { it == ON } } == 1006)
 }
 
-fun runIterations(input: List<String>, iterations: Int): List<CharArray> {
+fun runIterations(input: List<String>, iterations: Int, part2: Boolean = false): List<CharArray> {
     var map = input.map { it.trim() }.filterNot { it.isBlank() }.map { it.toCharArray() }.toMutableList()
     val xRange = IntRange(0, map.size - 1)
     val yRange = IntRange(0, map[0].size - 1)
 
-//    map.forEach { println(it) }
+    if (part2) {
+        map[xRange.first][yRange.first] = ON
+        map[xRange.first][yRange.last] = ON
+        map[xRange.last][yRange.first] = ON
+        map[xRange.last][yRange.last] = ON
+
+    }
+
     (0 until iterations).forEach { _ ->
         val nextMap = mutableListOf<CharArray>()
         xRange.forEach { x ->
             val row = CharArray(xRange.last + 1)
             yRange.forEach { y ->
                 val neighborsOn = getNeighbors(Pair(x, y), xRange, yRange).count { map[it.first][it.second] == ON }
-                val thisPoint = map[x][y]
-                if (thisPoint == ON) {
-                    if (neighborsOn < 2 || neighborsOn > 3) row[y] = OFF else row[y] = ON
-                } else if (thisPoint == OFF) {
-                    if (neighborsOn == 3) row[y] = ON else row[y] = OFF
+
+
+                if (part2 && (x == xRange.first || x == xRange.last) && (y == yRange.first || y == yRange.last)) {
+                    row[y] = ON
+                } else {
+                    val thisPoint = map[x][y]
+                    if (thisPoint == ON) {
+                        row[y] = if (neighborsOn == 2 || neighborsOn == 3) ON else OFF
+                    } else if (thisPoint == OFF) {
+                        row[y] = if (neighborsOn == 3) ON else OFF
+                    }
                 }
             }
             nextMap.add(row)
         }
-//        println("iteration $i")
-//        nextMap.forEach { println(it) }
         map = nextMap
     }
     return map
