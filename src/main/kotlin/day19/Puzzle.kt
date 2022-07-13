@@ -9,6 +9,8 @@ fun main() {
     val input =
         "CRnSiRnCaPTiMgYCaPTiRnFArSiThFArCaSiThSiThPBCaCaSiRnSiRnTiTiMgArPBCaPMgYPTiRnFArFArCaSiRnBPMgArPRnCaPTiRnFArCaSiThCaCaFArPBCaCaPTiTiRnFArCaSiRnSiAlYSiThRnFArArCaSiRnBFArCaCaSiRnSiThCaCaCaFYCaPTiBCaSiThCaSiThPMgArSiRnCaPBFYCaCaFArCaCaCaCaSiThCaSiRnPRnFArPBSiThPRnFArSiRnMgArCaFYFArCaSiRnSiAlArTiTiTiTiTiTiTiRnPMgArPTiTiTiBSiRnSiAlArTiTiRnPMgArCaFYBPBPTiRnSiRnMgArSiThCaFArCaSiThFArPRnFArCaSiRnTiBSiThSiRnSiAlYCaFArPRnFArSiThCaFArCaCaSiThCaCaCaSiRnPRnCaFArFYPMgArCaPBCaPBSiRnFYPBCaFArCaSiAl"
     println(getMolecules(input, replacements).size == 518)
+
+    println(findE(input, replacements) == 200)
 }
 
 fun getMolecules(input: String, replacements: List<String>): Set<String> {
@@ -16,18 +18,35 @@ fun getMolecules(input: String, replacements: List<String>): Set<String> {
 
     val molecules = mutableSetOf<String>()
     formulas.forEach { formula ->
-//        println(formula)
         Regex(formula.first).findAll(input).forEach { matches ->
             molecules.addAll(matches.groups.take(1).map {
                 input.replaceRange(it?.range!!, formula.second)
             })
         }
     }
-//    println(molecules)
     return molecules
 }
 
+fun findE(input: String, replacements: List<String>): Int {
+    val formulas = replacements.map { it.split(" ") }.map { Pair(it[0], it[2]) }.toList()
+
+    var toE = input
+    var count = 0
+    while (toE != "e") {
+        formulas.forEach {
+            if (toE.contains(it.second)) {
+                val startIndex = toE.lastIndexOf(it.second)
+                toE = toE.replaceRange(startIndex, startIndex + it.second.length, it.first)
+                count++
+            }
+        }
+    }
+    return count
+}
+
 const val EXAMPLE = """
+e => H
+e => O
 H => HO
 H => OH
 O => HH
