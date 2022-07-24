@@ -3,34 +3,34 @@ package day21
 import util.combinations
 
 val weapons = listOf(
-        Item("Dagger", 8, 4, 0),
-        Item("Shortsword", 10, 5, 0),
-        Item("Warhammer", 25, 6, 0),
-        Item("Longsword", 40, 7, 0),
-        Item("Greataxe", 74, 8, 0)
+    Item("Dagger", 8, 4, 0),
+    Item("Shortsword", 10, 5, 0),
+    Item("Warhammer", 25, 6, 0),
+    Item("Longsword", 40, 7, 0),
+    Item("Greataxe", 74, 8, 0)
 )
 
 val armors = listOf(
-        Item("Leather", 13, 0, 1),
-        Item("Chainmail", 31, 0, 2),
-        Item("Splintmail", 53, 0, 3),
-        Item("Bandedmail", 75, 0, 4),
-        Item("Platemail", 102, 0, 5)
+    Item("Leather", 13, 0, 1),
+    Item("Chainmail", 31, 0, 2),
+    Item("Splintmail", 53, 0, 3),
+    Item("Bandedmail", 75, 0, 4),
+    Item("Platemail", 102, 0, 5)
 )
 
 val rings = listOf(
-        Item("Damage +1", 25, 1, 0),
-        Item("Damage +2", 50, 2, 0),
-        Item("Damage +3", 100, 3, 0),
-        Item("Defense +1", 20, 0, 1),
-        Item("Defense +2", 40, 0, 2),
-        Item("Defense +3", 80, 0, 3)
+    Item("Damage +1", 25, 1, 0),
+    Item("Damage +2", 50, 2, 0),
+    Item("Damage +3", 100, 3, 0),
+    Item("Defense +1", 20, 0, 1),
+    Item("Defense +2", 40, 0, 2),
+    Item("Defense +3", 80, 0, 3)
 )
 
 fun main() {
     // example
     println(
-            fight(8, listOf(Item("Shortsword", 10, 5, 0), Item("Platemail", 102, 0, 5)), 12, 2, 7)
+        fight(8, listOf(Item("Shortsword", 10, 5, 0), Item("Platemail", 102, 0, 5)), 12, 2, 7)
     )
 
     // get all the kits, sorted by cost
@@ -66,7 +66,13 @@ fun main() {
     }
 }
 
-fun fight(playerStartingPoints: Int, playerKit: List<Item>, bossStartingPoints: Int, bossArmor: Int, bossDamage: Int): Boolean {
+fun fight(
+    playerStartingPoints: Int,
+    playerKit: List<Item>,
+    bossStartingPoints: Int,
+    bossArmor: Int,
+    bossDamage: Int
+): Boolean {
     var playerPoints = playerStartingPoints
     val playerArmor = playerKit.sumOf { it.armor }
     val playerDamage = playerKit.sumOf { it.damage }
